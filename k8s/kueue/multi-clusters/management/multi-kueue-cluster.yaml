@@ -1,0 +1,8 @@
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: MultiKueueCluster
+metadata:
+  name: multikueue-test-worker
+spec:
+  kubeConfig:
+    locationType: Secret
+    location: worker-cluster-kubeconfig
