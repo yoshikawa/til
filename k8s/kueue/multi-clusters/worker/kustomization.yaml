@@ -3,3 +3,6 @@ kind: Kustomization
 
 resources:
   - kueue
+  - jobset
+  - trainer/manifests/overlays/kubeflow
+  - mpi-operator/manifests/overlays/kubeflow

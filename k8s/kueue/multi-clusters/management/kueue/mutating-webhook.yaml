@@ -66,6 +66,33 @@ webhooks:
     service:
       name: kueue-webhook-service
       namespace: kueue-system
+      path: /mutate-apps-v1-statefulset
+  failurePolicy: Fail
+  name: mstatefulset.kb.io
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: NotIn
+      values:
+      - kube-system
+      - kueue-system
+  rules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - statefulsets
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: kueue-webhook-service
+      namespace: kueue-system
       path: /mutate-batch-v1-job
   failurePolicy: Fail
   name: mjob.kb.io
@@ -249,26 +276,6 @@ webhooks:
     - CREATE
     resources:
     - rayjobs
-  sideEffects: None
-- admissionReviewVersions:
-  - v1
-  clientConfig:
-    service:
-      name: kueue-webhook-service
-      namespace: kueue-system
-      path: /mutate-apps-v1-statefulset
-  failurePolicy: Fail
-  name: mstatefulset.kb.io
-  rules:
-  - apiGroups:
-    - apps
-    apiVersions:
-    - v1
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - statefulsets
   sideEffects: None
 - admissionReviewVersions:
   - v1

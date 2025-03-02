@@ -67,6 +67,33 @@ webhooks:
     service:
       name: kueue-webhook-service
       namespace: kueue-system
+      path: /validate-apps-v1-statefulset
+  failurePolicy: Fail
+  name: vstatefulset.kb.io
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: NotIn
+      values:
+      - kube-system
+      - kueue-system
+  rules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - statefulsets
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: kueue-webhook-service
+      namespace: kueue-system
       path: /validate-batch-v1-job
   failurePolicy: Fail
   name: vjob.kb.io
@@ -260,26 +287,6 @@ webhooks:
     - UPDATE
     resources:
     - rayjobs
-  sideEffects: None
-- admissionReviewVersions:
-  - v1
-  clientConfig:
-    service:
-      name: kueue-webhook-service
-      namespace: kueue-system
-      path: /validate-apps-v1-statefulset
-  failurePolicy: Fail
-  name: vstatefulset.kb.io
-  rules:
-  - apiGroups:
-    - apps
-    apiVersions:
-    - v1
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - statefulsets
   sideEffects: None
 - admissionReviewVersions:
   - v1
